@@ -1,10 +1,12 @@
 import JiraApi from 'jira-client'
+import alfy from 'alfy'
 import { getEnv, replaceAlfredVars } from '../helpers'
 
 export default ((host, username, password) => {
     /**
      * @property api.findIssue
      * @property api.searchJira
+     * @property api.searchUsers
      */
     const api = new JiraApi({
         protocol: 'https',
@@ -15,14 +17,21 @@ export default ((host, username, password) => {
         strictSSL: true
     })
 
-    const getIssueById = async (id) => {
+    const getIssueById = async (id, fields) => {
         try {
-            const {fields: {summary}} = await api.findIssue(id, '', 'summary')
+            const issue = await api.findIssue(id, '', fields && fields.join(','))
 
-            const title = summary.replace(/"/g, '')
+            const title = issue.fields.summary.replace(/"/g, '')
             const url = `https://${host}/browse/${id}`
 
-            return {title, url}
+            let mapped = {title, url}
+
+            const additionalFields = fields.filter(field => !['summary', 'key'].includes(field))
+            if (additionalFields) {
+                additionalFields.forEach(field => mapped[field] = issue.fields[field])
+            }
+
+            return mapped
         } catch (e) {
             console.error(e.message)
 
@@ -30,18 +39,22 @@ export default ((host, username, password) => {
         }
     }
 
-    const getIssuesByKeyword = async (keyword) => {
+    const getIssues = async (criteria, fields) => {
         try {
-            const additionalCriteria = getEnv('keyword_criteria') || ''
-            const criteria = replaceAlfredVars(`summary ~ "${keyword}" ${additionalCriteria}`)
-
-            const results = await api.searchJira(criteria, {fields: ['summary', 'key']})
+            const results = await api.searchJira(replaceAlfredVars(criteria), {fields})
 
             const issues = results.issues.map((issue) => {
                 const title = issue.fields.summary.replace(/"/g, '')
                 const url = `https://${host}/browse/${issue.key}`
 
-                return {title, url}
+                let mapped = {title, url}
+
+                const additionalFields = fields.filter(field => !['summary', 'key'].includes(field))
+                if (additionalFields) {
+                    additionalFields.forEach(field => mapped[field] = issue.fields[field])
+                }
+
+                return mapped
             })
 
             return issues
@@ -52,8 +65,51 @@ export default ((host, username, password) => {
         }
     }
 
+    const getUserAccountIds = async (emailAddresses) => {
+        try {
+            let userAccounts = {}
+
+            /**
+             * Check for cached user account ids
+             * @todo refactor this to make one call to the cache
+             */
+            emailAddresses.forEach((emailAddress) => {
+                const accountId = alfy.cache.get(emailAddress)
+
+                if (accountId) {
+                    userAccounts[emailAddress] = accountId
+                }
+            })
+
+            /**
+             * For non-cached user account ids fetch from Jira
+             */
+            const nonCachedUserAccounts = emailAddresses.filter(emailAddress => !userAccounts.hasOwnProperty(emailAddress))
+            if (nonCachedUserAccounts) {
+                const results = await api.searchUsers({query: nonCachedUserAccounts.join(',')})
+
+                const foundUsers = results.filter(({emailAddress}) => nonCachedUserAccounts.includes(emailAddress))
+
+                if (foundUsers) {
+                    foundUsers.forEach(({emailAddress, accountId}) => {
+                        alfy.cache.set(emailAddress, accountId)
+
+                        userAccounts[emailAddress] = accountId
+                    })
+                }
+            }
+
+            return userAccounts
+        } catch (e) {
+            console.error(e.message)
+
+            return false
+        }
+    }
+
     return {
         getIssueById,
-        getIssuesByKeyword,
+        getIssues,
+        getUserAccountIds,
     }
 })
