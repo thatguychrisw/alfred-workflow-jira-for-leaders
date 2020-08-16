@@ -20,7 +20,12 @@ const mapIssueToAlfyOutput = (issue) => ({
 ;(async () => {
     const service = makeJiraService(...getJiraCredentials())
 
-    const members = await service.getUserAccountIds(getEnv('jira_teammates').split(','))
+    const teamMembers = getEnv('jira_team_members')
+    if (!teamMembers) {
+        return alfy.output([{title: 'Please add team members first', valid: false}])
+    }
+
+    const members = await service.getUserAccountIds(teamMembers.split(','))
 
     if (members) {
         let issues = alfy.cache.get('team-wip')
@@ -32,9 +37,12 @@ const mapIssueToAlfyOutput = (issue) => ({
 
             issues = await service.getIssues(criteria, ['summary', 'key', 'assignee'])
 
-            alfy.cache.set('team-wip', issues, {maxAge: 900000}) // 15m
+            alfy.cache.set('teamMembers-wip', issues, {maxAge: 900000}) // 15m
         }
 
-        return alfy.output(issues.map(mapIssueToAlfyOutput))
+        return alfy.output(issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{
+            title: 'There is no work in progress',
+            valid: false
+        }])
     }
 })()

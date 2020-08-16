@@ -33,9 +33,7 @@ export default ((host, username, password) => {
 
             return mapped
         } catch (e) {
-            console.error(e.message)
-
-            return false
+            return null
         }
     }
 
@@ -59,9 +57,7 @@ export default ((host, username, password) => {
 
             return issues
         } catch (e) {
-            console.error(e.message)
-
-            return false
+            return null
         }
     }
 
@@ -83,27 +79,28 @@ export default ((host, username, password) => {
 
             /**
              * For non-cached user account ids fetch from Jira
+             * @todo make these calls more efficient by using Promise.all()
              */
             const nonCachedUserAccounts = emailAddresses.filter(emailAddress => !userAccounts.hasOwnProperty(emailAddress))
             if (nonCachedUserAccounts) {
-                const results = await api.searchUsers({query: nonCachedUserAccounts.join(',')})
+                nonCachedUserAccounts.forEach(async (emailAddress) => {
+                    const results = await api.searchUsers({query: emailAddress})
 
-                const foundUsers = results.filter(({emailAddress}) => nonCachedUserAccounts.includes(emailAddress))
+                    const foundUsers = results.filter(({emailAddress}) => nonCachedUserAccounts.includes(emailAddress))
 
-                if (foundUsers) {
-                    foundUsers.forEach(({emailAddress, accountId}) => {
-                        alfy.cache.set(emailAddress, accountId)
+                    if (foundUsers) {
+                        foundUsers.forEach(({emailAddress, accountId}) => {
+                            alfy.cache.set(emailAddress, accountId)
 
-                        userAccounts[emailAddress] = accountId
-                    })
-                }
+                            userAccounts[emailAddress] = accountId
+                        })
+                    }
+                })
             }
 
             return userAccounts
         } catch (e) {
-            console.error(e.message)
-
-            return false
+            return null
         }
     }
 

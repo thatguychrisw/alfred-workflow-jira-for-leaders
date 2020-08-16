@@ -24,7 +24,6 @@ const mapIssueToAlfyOutput = (issue) => ({
     const service = makeJiraService(...getJiraCredentials())
 
     const searchById = async (input) => {
-        alfy.cache.clear()
         let issue = alfy.cache.get(`search-${input}`)
         if (!issue) {
             issue = [await service.getIssueById(input, ['summary', 'key', 'assignee', 'status'])]
@@ -32,7 +31,7 @@ const mapIssueToAlfyOutput = (issue) => ({
             alfy.cache.set(`search-${input}`, issue, {maxAge: 900000})
         }
 
-        return issue.map(mapIssueToAlfyOutput)
+        return issue[0] ? issue.map(mapIssueToAlfyOutput) : [{title: `Ticket ${input} does not exist`}]
     }
 
     const searchByKeyword = async (input) => {
@@ -46,7 +45,7 @@ const mapIssueToAlfyOutput = (issue) => ({
             alfy.cache.set(`search-${input}`, issues, {maxAge: 900000})
         }
 
-        return issues.map(mapIssueToAlfyOutput)
+        return issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{title: `No results for ${input}`}]
     }
 
     const search = isJiraIssueKey(alfy.input) ? searchById : searchByKeyword

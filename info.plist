@@ -588,7 +588,7 @@ echo -n $query</string>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string></string>
+				<string>Cached for 15m</string>
 				<key>title</key>
 				<string>Searching for team wip...</string>
 				<key>type</key>
@@ -654,7 +654,7 @@ echo -n $query</string>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string></string>
+				<string>Cached for 15m</string>
 				<key>title</key>
 				<string>Search for Jira issues</string>
 				<key>type</key>
@@ -847,7 +847,7 @@ echo -n $query</string>
 		<string>VqICacvVd8n203Q3uJZN964E</string>
 		<key>jira_project</key>
 		<string>MI</string>
-		<key>jira_teammates</key>
+		<key>jira_team_members</key>
 		<string>zachary.anderson@bankrate.com,sarah.liu@bankrate.com,daniel.perez@bankrate.com,marwilliams@redventures.com</string>
 		<key>jira_username</key>
 		<string>chris.willard@bankrate.com</string>
@@ -858,7 +858,7 @@ echo -n $query</string>
 	<array>
 		<string>jira_password</string>
 		<string>jira_project</string>
-		<string>jira_teammates</string>
+		<string>jira_team_members</string>
 		<string>jira_username</string>
 		<string>jira_host</string>
 	</array>
