@@ -40,7 +40,7 @@ const mapIssueToAlfyOutput = (issue) => ({
 
             issues = await service.getIssues(criteria, ['summary', 'key', 'assignee', 'status'])
 
-            alfy.cache.set('teamMembers-wip', issues, {maxAge: 900000}) // 15m
+            alfy.cache.set('team-wip', issues, {maxAge: 900000}) // 15m
         }
 
         return alfy.output(issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{
