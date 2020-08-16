@@ -3,7 +3,7 @@ import makeJiraService from '../services/jira'
 import { getEnv, getJiraCredentials } from '../helpers'
 
 /**
- * @param {{title: string}, {url: string}, {assignee: object}} issue
+ * @param {{title: string}, {url: string}, {status: object}, {assignee: object}} issue
  * @returns {{mods: {alt: {subtitle: string}}, subtitle: *, arg: *, title: string}}
  */
 const mapIssueToAlfyOutput = (issue) => ({
@@ -13,6 +13,9 @@ const mapIssueToAlfyOutput = (issue) => ({
       mods: {
           alt: {
               subtitle: issue.url
+          },
+          ctrl: {
+              subtitle: `${issue.status.name}`
           }
       }
   })
@@ -35,7 +38,7 @@ const mapIssueToAlfyOutput = (issue) => ({
             status not in ("To Do", "Pending Release", "Done") and
             assignee IN (${Object.values(members).join(',')})`
 
-            issues = await service.getIssues(criteria, ['summary', 'key', 'assignee'])
+            issues = await service.getIssues(criteria, ['summary', 'key', 'assignee', 'status'])
 
             alfy.cache.set('teamMembers-wip', issues, {maxAge: 900000}) // 15m
         }
