@@ -869,7 +869,7 @@
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Cached for 15m</string>
+				<string>Cached for {var:jira_search_ttl}m</string>
 				<key>title</key>
 				<string>Search for Jira issues</string>
 				<key>type</key>
@@ -948,7 +948,22 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>This is a Jira-focused workflow designed for modern software development teams.  It provides many useful tools to help team members identify tasks that might be stuck in the workstream, members who may have capacity, work-in-progress, and more!
+
+Set up:
+You must create a Jira Cloud API key in order to use this workflow.
+
+Environment notes:
+
+* churn_days: represents the number of days a task can remain in the same status before it's considered churn/stale.
+
+* jira_team_members: a csv of your team member's email addresses used to identify tasks assigned to them.
+
+* keyword_criteria: additional criteria that's used during every keyword search. 
+
+* ttls: each action has a configurable cache expiration, these are in minutes.
+
+* team_unassigned_url: the url used to help identify available work for team members with capacity.</string>
 	<key>uidata</key>
 	<dict>
 		<key>01ACA7CC-1B7C-4977-B204-C606EEB4BA2A</key>
@@ -1104,6 +1119,8 @@
 		<string>VqICacvVd8n203Q3uJZN964E</string>
 		<key>jira_project</key>
 		<string>MI</string>
+		<key>jira_search_ttl</key>
+		<string>15</string>
 		<key>jira_team_members</key>
 		<string>zachary.anderson@bankrate.com,sarah.liu@bankrate.com,daniel.perez@bankrate.com,marwilliams@redventures.com</string>
 		<key>jira_username</key>
@@ -1111,13 +1128,13 @@
 		<key>keyword_criteria</key>
 		<string>AND project = "{var:jira_project}" AND sprint in openSprints() ORDER BY updated DESC</string>
 		<key>team_churn_ttl</key>
-		<string>0</string>
+		<string>15</string>
 		<key>team_unassigned_ttl</key>
-		<string>0</string>
+		<string>15</string>
 		<key>team_unassigned_url</key>
 		<string>https://redventures.atlassian.net/secure/RapidBoard.jspa?rapidView=214&amp;view=planning.nodetail&amp;issueLimit=100</string>
 		<key>team_wip_ttl</key>
-		<string>0</string>
+		<string>15</string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>

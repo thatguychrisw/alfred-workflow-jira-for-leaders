@@ -42,7 +42,7 @@ const mapIssueToAlfyOutput = (issue) => ({
         if (!issues) {
             issues = await service.getIssues(criteria, ['summary', 'key', 'assignee', 'status'])
 
-            alfy.cache.set(`search-${input}`, issues, {maxAge: 900000})
+            alfy.cache.set(`search-${input}`, issues, {maxAge: getEnv('jira_search_ttl') * 60000 | 0})
         }
 
         return issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{title: `No results for ${input}`}]
