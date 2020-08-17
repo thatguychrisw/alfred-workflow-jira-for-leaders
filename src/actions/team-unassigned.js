@@ -48,7 +48,7 @@ const mapMemberToAlfredOutput = (member) => ({
             unassignedMembers = teamMembers.split(',')
               .filter(emailAddress => !assignedMembers.includes(emailAddress))
               .map(member => ({
-                  title: member
+                  title: alfy.cache.get(`${member}-displayName`)
               }))
 
             alfy.cache.set('team-unassigned', unassignedMembers, {maxAge: getEnv('team_unassigned_ttl') * 60000 || 0})

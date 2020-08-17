@@ -1,6 +1,6 @@
 import JiraApi from 'jira-client'
 import alfy from 'alfy'
-import { getEnv, replaceAlfredVars } from '../helpers'
+import { replaceAlfredVars } from '../helpers'
 
 export default ((host, username, password) => {
     /**
@@ -89,8 +89,9 @@ export default ((host, username, password) => {
                     const foundUsers = results.filter(({emailAddress}) => nonCachedUserAccounts.includes(emailAddress))
 
                     if (foundUsers) {
-                        foundUsers.forEach(({emailAddress, accountId}) => {
+                        foundUsers.forEach(({emailAddress, accountId, displayName}) => {
                             alfy.cache.set(emailAddress, accountId)
+                            alfy.cache.set(`${emailAddress}-displayName`, displayName)
 
                             userAccounts[emailAddress] = accountId
                         })
