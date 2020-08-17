@@ -45,6 +45,7 @@ const mapIssueToAlfyOutput = (issue) => ({
 
         return alfy.output(issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{
             title: 'There is no work in progress',
+            subtitle: 'ESC to hide',
             valid: false
         }])
     }
