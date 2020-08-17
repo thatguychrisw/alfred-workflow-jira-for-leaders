@@ -5,7 +5,6 @@ import { getEnv, getJiraCredentials } from '../helpers'
 
 /**
  * @param {{title: string}, {url: string}, {status: object}, {daysStale: number}, {assignee: object}} issue
- * @returns {{mods: {alt: {subtitle: string}}, subtitle: *, arg: *, title: string}}
  */
 const mapIssueToAlfyOutput = (issue) => ({
       title: issue.title,
@@ -39,6 +38,10 @@ const mapIssueToAlfyOutput = (issue) => ({
         if (members) {
             const daysConsideredChurn = getEnv('churn_days')
 
+            /**
+             * @todo these status will need to be custom for a broader release
+             * @internal consider a csv of statuses and dynamically create each condition
+             */
             const criteria = `
             (
                 (status = "In Progress" AND status changed to "In Progress" before -${daysConsideredChurn}d) OR 
