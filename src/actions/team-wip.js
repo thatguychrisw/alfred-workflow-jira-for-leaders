@@ -40,7 +40,7 @@ const mapIssueToAlfyOutput = (issue) => ({
 
             issues = await service.getIssues(criteria, ['summary', 'key', 'assignee', 'status'])
 
-            alfy.cache.set('team-wip', issues, {maxAge: getEnv('team_wip_ttl') || 0})
+            alfy.cache.set('team-wip', issues, {maxAge: getEnv('team_wip_ttl') * 60000 || 0})
         }
     }
 

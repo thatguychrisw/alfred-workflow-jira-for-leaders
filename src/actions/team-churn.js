@@ -57,7 +57,7 @@ const mapIssueToAlfyOutput = (issue) => ({
                 return issue
             }).filter(issue => issue.daysStale > daysConsideredChurn)
 
-            alfy.cache.set('team-churn', issues, {maxAge: getEnv('team_churn_ttl') || 0})
+            alfy.cache.set('team-churn', issues, {maxAge: (getEnv('team_churn_ttl') * 60000) || 0})
         }
     }
 

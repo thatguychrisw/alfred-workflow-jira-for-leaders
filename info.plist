@@ -86,6 +86,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>9E87B85F-15D7-44B3-9C19-0DEE90EBBC9D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>98D08D93-C137-43D0-AAEF-F29F26F5EBA6</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>9FA4BCD3-71E5-451B-9ECB-4F2498A10D4A</key>
 		<array>
 			<dict>
@@ -167,19 +180,7 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>2B9B3685-ACDC-4256-B9C9-4B36C63CE116</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>sourceoutputuid</key>
-				<string>E5253158-5806-4BE7-8924-FBD0AC0DE695</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>FDF7CEFF-7C2F-42CA-869C-B40F382AD23F</string>
+				<string>9E87B85F-15D7-44B3-9C19-0DEE90EBBC9D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -337,48 +338,49 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
+				<key>alfredfiltersresults</key>
 				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<false/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>2 days left with 40% work remaining (10% WIP)</string>
-				<key>title</key>
-				<string>{var:jira_project} is at Risk!</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>2B9B3685-ACDC-4256-B9C9-4B36C63CE116</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
 				<key>escaping</key>
 				<integer>102</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
 				<key>script</key>
-				<string>query=$1
-
-echo -n $query</string>
+				<string>./node_modules/.bin/run-node src/actions/team-churn.js "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
+				<key>subtext</key>
+				<string>Cached for {var:team_unassigned_ttl}m</string>
+				<key>title</key>
+				<string>Searching for unassigned work...</string>
 				<key>type</key>
 				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>FDF7CEFF-7C2F-42CA-869C-B40F382AD23F</string>
+			<string>98D08D93-C137-43D0-AAEF-F29F26F5EBA6</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -398,20 +400,6 @@ echo -n $query</string>
 						<string>Set Default Project</string>
 						<key>uid</key>
 						<string>9CB1AD6F-F0D0-4ABD-8618-7840B13E3C93</string>
-					</dict>
-					<dict>
-						<key>inputstring</key>
-						<string>{query}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>sprint-status</string>
-						<key>outputlabel</key>
-						<string>Show Sprint Status</string>
-						<key>uid</key>
-						<string>E5253158-5806-4BE7-8924-FBD0AC0DE695</string>
 					</dict>
 					<dict>
 						<key>inputstring</key>
@@ -469,6 +457,23 @@ echo -n $query</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argument</key>
+				<string></string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>9E87B85F-15D7-44B3-9C19-0DEE90EBBC9D</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -476,7 +481,7 @@ echo -n $query</string>
 				<key>fixedorder</key>
 				<true/>
 				<key>items</key>
-				<string>[{"title":"Sprint Status","arg":"sprint-status","subtitle":"Show the current sprint status"},{"title":"Team Unassigned","arg":"team-unassigned","subtitle":"Show any team member with unassigned work"},{"title":"Team Churn","arg":"team-churn","subtitle":"Display team tasks that may be stuck"},{"title":"Team WIP","arg":"team-wip","subtitle":"Display WIP for each team member"},{"title":"Set Default Project","arg":"set-default-project ","subtitle":"Set the default project for all inquiries"}]</string>
+				<string>[{"title":"Team Unassigned","arg":"team-unassigned","subtitle":"Show any team member with unassigned work"},{"title":"Team Churn","arg":"team-churn","subtitle":"Display team tasks that may be stuck"},{"title":"Team WIP","arg":"team-wip","subtitle":"Display WIP for each team member"},{"title":"Set Default Project","arg":"set-default-project ","subtitle":"Set the default project for all inquiries"}]</string>
 				<key>keyword</key>
 				<string>jfl</string>
 				<key>runningsubtext</key>
@@ -558,7 +563,7 @@ echo -n $query</string>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Cached for 15m</string>
+				<string>Cached for {var:team_churn_ttl}m</string>
 				<key>title</key>
 				<string>Searching for team churn...</string>
 				<key>type</key>
@@ -672,7 +677,7 @@ echo -n $query</string>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Cached for 15m</string>
+				<string>Cached for {var:team_wip_ttl}m</string>
 				<key>title</key>
 				<string>Searching for team wip...</string>
 				<key>type</key>
@@ -810,13 +815,6 @@ echo -n $query</string>
 			<key>ypos</key>
 			<integer>520</integer>
 		</dict>
-		<key>2B9B3685-ACDC-4256-B9C9-4B36C63CE116</key>
-		<dict>
-			<key>xpos</key>
-			<integer>690</integer>
-			<key>ypos</key>
-			<integer>155</integer>
-		</dict>
 		<key>3AD7CAE1-F13C-4D43-86C7-40C74F34E98F</key>
 		<dict>
 			<key>xpos</key>
@@ -851,6 +849,20 @@ echo -n $query</string>
 			<integer>855</integer>
 			<key>ypos</key>
 			<integer>40</integer>
+		</dict>
+		<key>98D08D93-C137-43D0-AAEF-F29F26F5EBA6</key>
+		<dict>
+			<key>xpos</key>
+			<integer>740</integer>
+			<key>ypos</key>
+			<integer>270</integer>
+		</dict>
+		<key>9E87B85F-15D7-44B3-9C19-0DEE90EBBC9D</key>
+		<dict>
+			<key>xpos</key>
+			<integer>650</integer>
+			<key>ypos</key>
+			<integer>300</integer>
 		</dict>
 		<key>9FA4BCD3-71E5-451B-9ECB-4F2498A10D4A</key>
 		<dict>
@@ -903,13 +915,6 @@ echo -n $query</string>
 			<key>ypos</key>
 			<integer>520</integer>
 		</dict>
-		<key>FDF7CEFF-7C2F-42CA-869C-B40F382AD23F</key>
-		<dict>
-			<key>xpos</key>
-			<integer>685</integer>
-			<key>ypos</key>
-			<integer>275</integer>
-		</dict>
 	</dict>
 	<key>variables</key>
 	<dict>
@@ -928,7 +933,9 @@ echo -n $query</string>
 		<key>keyword_criteria</key>
 		<string>AND project = "{var:jira_project}" AND sprint in openSprints() ORDER BY updated DESC</string>
 		<key>team_churn_ttl</key>
-		<string>900000</string>
+		<string>0</string>
+		<key>team_unassigned_ttl</key>
+		<string>0</string>
 		<key>team_wip_ttl</key>
 		<string>0</string>
 	</dict>
