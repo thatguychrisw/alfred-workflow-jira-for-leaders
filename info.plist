@@ -914,7 +914,7 @@ echo -n $query</string>
 	<key>variables</key>
 	<dict>
 		<key>churn_days</key>
-		<string>4</string>
+		<string>2</string>
 		<key>jira_host</key>
 		<string>redventures.atlassian.net</string>
 		<key>jira_password</key>
@@ -927,6 +927,10 @@ echo -n $query</string>
 		<string>chris.willard@bankrate.com</string>
 		<key>keyword_criteria</key>
 		<string>AND project = "{var:jira_project}" AND sprint in openSprints() ORDER BY updated DESC</string>
+		<key>team_churn_ttl</key>
+		<string>900000</string>
+		<key>team_wip_ttl</key>
+		<string>0</string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>

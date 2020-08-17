@@ -28,11 +28,11 @@ const mapIssueToAlfyOutput = (issue) => ({
         return alfy.output([{title: 'Please add team members first', valid: false}])
     }
 
-    const members = await service.getUserAccountIds(teamMembers.split(','))
+    let issues = alfy.cache.get('team-wip')
+    if (!issues) {
+        const members = await service.getUserAccountIds(teamMembers.split(','))
 
-    if (members) {
-        let issues = alfy.cache.get('team-wip')
-        if (!issues) {
+        if (members) {
             const criteria = `
             sprint in openSprints() and 
             status not in ("To Do", "Pending Release", "Done") and
@@ -40,13 +40,13 @@ const mapIssueToAlfyOutput = (issue) => ({
 
             issues = await service.getIssues(criteria, ['summary', 'key', 'assignee', 'status'])
 
-            alfy.cache.set('team-wip', issues, {maxAge: 900000}) // 15m
+            alfy.cache.set('team-wip', issues, {maxAge: getEnv('team_wip_ttl') || 0})
         }
-
-        return alfy.output(issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{
-            title: 'There is no work in progress',
-            subtitle: 'ESC to hide',
-            valid: false
-        }])
     }
+
+    return alfy.output(issues.length > 0 ? issues.map(mapIssueToAlfyOutput) : [{
+        title: 'There is no work in progress',
+        subtitle: 'ESC to hide',
+        valid: false
+    }])
 })()
